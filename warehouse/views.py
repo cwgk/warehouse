@@ -184,12 +184,14 @@ def edit_good(good_id):
         good_info.base_weight = base_weight
         db.session.commit()
         flash('修改成功！')
+        init_good_trends(good_id)
         return redirect(url_for('creat'))
     if del_form.validate_on_submit():
         print('del_good')
         db.session.delete(good_info)
         db.session.commit()
         flash('删除成功！')
+        init_good_trends(good_id)
         return redirect(url_for('creat'))
     form.base_num.data = good_info.base_num
     form.g_type.data = good_info.g_type
@@ -288,11 +290,18 @@ def init_good_trends(good_id):
         db.session.add(good_trends)
         db.session.commit()
     else:
-        good_exist.base_num = good_info.base_num
-        good_exist.total_num = good_exist.base_num + good_exist.trends_num
-        good_exist.base_weight = good_info.base_weight
-        good_exist.total_weight = good_exist.base_weight + good_exist.trends_weight
-        db.session.commit()
+        if good_info is not None:
+            good_exist.base_num = good_info.base_num
+            good_exist.total_num = good_exist.base_num + good_exist.trends_num
+            good_exist.base_weight = good_info.base_weight
+            good_exist.total_weight = good_exist.base_weight + good_exist.trends_weight
+            db.session.commit()
+        else:
+            good_exist.base_num = 0
+            good_exist.total_num = good_exist.base_num + good_exist.trends_num
+            good_exist.base_weight = 0
+            good_exist.total_weight = good_exist.base_weight + good_exist.trends_weight
+            db.session.commit()
 
 
 @app.template_filter('my_date')
