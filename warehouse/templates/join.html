@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>邦普仓库物流系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+{% from 'bootstrap/form.html' import render_form %}
+<main class="container p-2">
+    <header>
+        <div class="input-group">
+            <div class="input-group-prepend" style="width:15%">
+                <a href="{{ url_for('index') }}">
+                    {#                    <button class="btn btn-sm btn-link" >#}
+                    <img src={{ url_for('static', filename='arrow-left-short.svg') }} width="32" height="32">
+                    {#                    </button>#}
+                </a>
+            </div>
+            <div class="input-group-prepend" style="width:70%">
+                <h2 class="text-center">
+                    <p class="text-primary">邦普
+                        <small><small class="text-muted">入库系统</small></small></p>
+                </h2>
+            </div>
+            <div class="input-group-prepend" style="width:15%">
+            </div>
+        </div>
+    </header>
+    <form method="post">
+        {{ form.csrf_token }}
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.g_name.label }} :
+                {{ form.g_name(class='form-control',style="width:200px") }}
+            </div>
+        </div>
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.g_num.label }} :
+                {{ form.g_num(class='form-control' ,style="width:110px") }}
+            </div>
+            <div class="input-group-prepend">
+                单位 ：{{ form.g_type(class='form-control') }}
+            </div>
+            <div class="input-group-prepend mx-3">
+                {{ form.weight.label }} :
+                <div class="input-group">
+                    {{ form.weight(class='form-control',style="width:110px") }}
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">吨</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <small class="text-info">注：没有可不填，有数量填单位</small>
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.need_goods_f.label }} :
+                {{ form.need_goods_f(class='form-control',style="width:120px") }}
+            </div>
+            <div class="input-group-prepend mx-3">
+                {{ form.need_goods_s.label }} :
+                <div class="input-group">
+                    {{ form.need_goods_s(class='form-control',style="width:90px") }}
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">公斤</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.from_where.label }}:
+                {{ form.from_where(class='form-control',style="width:160px") }}
+            </div>
+            <div class="input-group-prepend mx-3">
+                {{ form.to_where.label }} :
+                {{ form.to_where(class='form-control',style="width:160px") }}
+            </div>
+        </div>
+        <div class="input-group pt-2">
+            <div class="input-group-prepend ">
+                {{ form.to_company.label }} :
+                {{ form.to_company(class='form-control',style="width:160px") }}
+            </div>
+            <div class="input-group-prepend mx-3">
+                {{ form.license_num.label }} :
+                {{ form.license_num(class='form-control',style="width:160px") }}
+            </div>
+        </div>
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.trans_date.label }} :
+                {{ form.trans_date(class='form-control',style="width:200px") }}
+            </div>
+        </div>
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.remarks.label }} :
+                {{ form.remarks(class='form-control',style="width:200px") }}
+            </div>
+        </div>
+        <div class="form-group pt-2">
+            {{ form.submit(class='btn btn-primary', value="入库") }}
+        </div>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>邦普仓库物流系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+<main class="container p-2">
+    <header>
+        <h2 class="text-center">
+            <p class="text-primary">邦普仓库
+                <small><small class="text-muted">物流系统</small></small></p>
+        </h2>
+    </header>
+
+    <div class="input-group pt-2">
+        <div class="input-group-append">
+            <a type="button" class="btn btn-secondary" href="{{ url_for('creat') }}">原有物品</a>
+        </div>
+        <div class="input-group-prepend mx-3">
+            <a type="button" class="btn btn-primary" href="{{ url_for('join') }}">新增入库</a>
+        </div>
+        <div class="input-group-append ">
+            <a type="button" class="btn btn-success" href="{{ url_for('goods_out') }}">新增出库</a>
+        </div>
+    </div>
+    <form method="post">
+        {{ form.csrf_token }}
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.years(class='form-select') }}
+            </div>
+            <div class="input-group-prepend mx-1">
+                {{ form.months(class='form-select') }}
+            </div>
+            <div class="input-group-append">
+                {{ form.submit(class='btn btn-success') }}
+            </div>
+        </div>
+    </form>
+    <form method="post">
+        {{ search_form.csrf_token }}
+        <div class="input-group pt-2">
+            <h6 class="text-success pt-3" style="width: 50%">库存动态：</h6>
+            {{ search_form.g_name(class="form-control", placeholder="Search") }}
+            <div class="input-group-append">
+                {{ search_form.submit_search(class='btn btn-success') }}
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive-sm pt-1">
+        <table class="table table-bordered table-sm">
+            <thead>
+            <tr>
+                <th style="width: 30%"><a style="text-decoration:none"
+                                          href="{{ url_for('index', sort=1) }}"><small>物品名称</small></a>
+                </th>
+                <th style="width: 18%"><a style="text-decoration:none"
+                                          href="{{ url_for('index', sort=2) }}"><small>总数量</small></a>
+                </th>
+                <th style="width: 20%"><a style="text-decoration:none"
+                                          href="{{ url_for('index', sort=3) }}"><small>重量(吨)</small></a></th>
+                <th class="text-center" style="width: 32%"><a style="text-decoration:none"
+                                                              href="{{ url_for('index', sort=0) }}"><small>最新动态</small></a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <div>
+
+                {% for trends_good in trends_goods %}
+                    <tr>
+                        <td>{{ trends_good.g_name }}</td>
+                        <td>{% if trends_good.total_num > 0 %}
+                            {{ trends_good.total_num }}
+                        {% endif %}
+                            <small class="text-muted">{{ trends_good.g_type }}</small></td>
+                        <td>
+                            {% if trends_good.total_weight > 0 %}
+                                {{ trends_good.total_weight }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if trends_good.trends_num > 0 %}
+                                <h6 class="text-danger"><small
+                                        class="text-muted">{{ trends_good.trends_date|my_date }}</small>+{{ trends_good.trends_num }}<small
+                                        class="text-muted">{{ trends_good.g_type }}</small>
+                                </h6>
+                            {% endif %}
+                            {% if trends_good.trends_weight > 0 %}
+                                <h6 class="text-danger"><small
+                                        class="text-muted">{{ trends_good.trends_date|my_date }}</small>+{{ trends_good.trends_weight }}<small
+                                        class="text-muted">吨</small>
+                                </h6>
+                            {% endif %}
+                            {% if trends_good.trends_num < 0 %}
+                                <h6 class="text-success"><small
+                                        class="text-muted">{{ trends_good.trends_date|my_date }}</small>{{ trends_good.trends_num }}<small
+                                        class="text-muted">{{ trends_good.g_type }}</small>
+                                </h6>
+                            {% endif %}
+                            {% if trends_good.trends_weight < 0 %}
+                                <h6 class="text-success"><small
+                                        class="text-muted">{{ trends_good.trends_date|my_date }}</small>{{ trends_good.trends_weight }}<small
+                                        class="text-muted">吨</small>
+                                </h6>
+                            {% endif %}
+                            <a href="{{ url_for('good_detail', good_id=trends_good.good_id) }}"><small
+                                    class="text-primary">详情</small></a>
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+            </div>
+
+
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-title text-center">
+                <h4 class="mo-name"></h4>
+            </div>
+            <!-- 模态框内容 -->
+            <div class="modal-body">
+                <p class="mo-num"><small class="mo-type"></small></p>
+                <p class="mo-weight"></p>
+                <p class="mo-from"></p>
+                <p class="mo-to"></p>
+                <p class="mo-to"></p>
+                <p class="mo-date"></p>
+                <p class="mo-lic"></p>
+                <p class="mo-remarks"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

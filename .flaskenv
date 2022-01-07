@@ -1,0 +1,2 @@
+FLASK_APP=warehouse
+FLASK_ENV=development

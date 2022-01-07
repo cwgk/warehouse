@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>邦普仓库物流系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+
+<main class="container p-2">
+    <header>
+        <div class="input-group">
+            <div class="input-group-prepend" style="width:15%">
+                <a href="{{ url_for('index') }}">
+                    <img src={{ url_for('static', filename='arrow-left-short.svg') }} width="32" height="32">
+                </a>
+            </div>
+            <div class="input-group-prepend" style="width:70%">
+                <h2 class="text-center">
+                    <p class="text-primary">{{ cur_title }}
+                        <small><small class="text-muted">运输详情</small></small></p>
+                </h2>
+            </div>
+            <div class="input-group-prepend" style="width:15%">
+            </div>
+        </div>
+    </header>
+
+    <div class="table-responsive-sm">
+        <table class="table table-bordered table-sm text-nowrap">
+            <thead>
+            <tr>
+                <th style="width: 100px"><a style="text-decoration:none" class="text-primary">运输日期</a></th>
+
+                <th style="width: 100px"><a style="text-decoration:none" class="text-primary">物品名称</a></th>
+
+                <th style="width: 80px"><a style="text-decoration:none" class="text-primary">运输数量</a>
+                </th>
+
+                <th style="width: 80px"><a style="text-decoration:none" class="text-primary">重量(吨)</a></th>
+
+                <th style="width: 80px"><a style="text-decoration:none" class="text-primary">起运地</a>
+                </th>
+
+                <th style="width: 80px"><a style="text-decoration:none" class="text-primary">到达地</a>
+                </th>
+
+                <th style="width: 100px"><a style="text-decoration:none" class="text-primary">车牌号</a>
+                </th>
+
+                <th style="width: 80px"><a style="text-decoration:none" class="text-primary">到货公司</a></th>
+
+                <th style="width: 100px"><a style="text-decoration:none" class="text-primary">备注</a>
+                </th>
+                <th style="width: 80px"><a style="text-decoration:none" class="text-primary">塑胶卡板</a></th>
+
+                <th style="width: 80px"><a style="text-decoration:none" class="text-primary">废纸箱<small>（kg）</small></a></th>
+            </tr>
+            </thead>
+            <tbody>
+            <div>
+
+                {% for item1 in good_detail %}
+                    <tr>
+                        <td>{{ item1.trans_date|my_date }}</td>
+                        <td><p class="text-justify">{{ item1.g_name }}</p></td>
+                        <td>{% if item1.g_num > 0 %}
+                            <a class="text-danger" style="text-decoration:none">{{ item1.g_num }}</a>
+                        {% elif item1.g_num < 0 %}
+                            <a class="text-success" style="text-decoration:none">{{ 0-item1.g_num }}</a>
+                        {% endif %}
+                            <small class="text-muted">{{ item1.g_type }}</small></td>
+                        <td>
+                            {% if item1.weight > 0 %}
+                                <a class="text-danger" style="text-decoration:none">{{ item1.weight }}</a>
+                            {% elif item1.weight < 0 %}
+                                <a class="text-success" style="text-decoration:none">{{ 0-item1.weight }}</a>
+                            {% endif %}
+                        </td>
+                        <td>{{ item1.from_where }}</td>
+                        <td>{{ item1.to_where }}</td>
+                        <td>{{ item1.license_num }}</td>
+                        <td>{{ item1.to_company }}</td>
+                        <td>{{ item1.remarks }}</td>
+                        <td>{{ item1.need_goods_f|my_num }}</td>
+                        <td>{{ item1.need_goods_s|my_num }}</td>
+                    </tr>
+
+                {% endfor %}
+            </div>
+
+
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

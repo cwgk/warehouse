@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>邦普仓库物流系统</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+
+<main class="container p-2">
+    <header>
+        <div class="input-group">
+            <div class="input-group-prepend" style="width:15%">
+                <a href="{{ url_for('index') }}">
+                    <img src="static/arrow-left-short.svg" alt="Bootstrap" width="32" height="32">
+                </a>
+            </div>
+            <div class="input-group-prepend" style="width:70%">
+                <h2 class="text-center">
+                    <p class="text-primary">仓库原有物品
+                        <small><small class="text-muted">设置</small></small></p>
+                </h2>
+            </div>
+            <div class="input-group-prepend" style="width:15%">
+            </div>
+        </div>
+    </header>
+
+    <form method="post">
+        {{ form.csrf_token }}
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.g_name.label }} :
+                {{ form.g_name(class='form-control',style="width:200px") }}
+            </div>
+        </div>
+        <div class="input-group pt-2">
+            <div class="input-group-prepend">
+                {{ form.base_num.label }} :
+                {{ form.base_num(class='form-control',style="width:100px") }}
+            </div>
+            <div class="input-group-prepend">
+                单位 ：{{ form.g_type(class='form-control',style="width:70px") }}
+            </div>
+            <div class="input-group-prepend mx-2">
+                {{ form.base_weight.label }} :
+                <div class="input-group">
+                    {{ form.base_weight(class='form-control',style="width:100px") }}
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">吨</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <small class="text-info">注：没有可不填，有数量填单位</small>
+        <div class="form-group pt-2">
+            {{ form.submit(class='btn btn-primary') }}
+        </div>
+    </form>
+
+    <h6 class="pt-2">{{ goods|length }} 类物品 :
+    </h6>
+    <div class="list-group">
+        {% for good in goods %}
+            <div class="list-group-item p-0">
+                <div class="input-group ">
+                    <div class="form-control text-justify px-2 py-0 "
+                         style="width:30%;border: 0;webkit-box-shadow:none;box-shadow:none;">
+                        <div class="input-group">
+
+                            <div class="input-group-prepend" style="width: 60%;">
+                                <h6 class="text-success pt-1">{{ loop.index }}.{{ good.g_name }}</h6>
+                            </div>
+                            <div class="input-group-prepend" style="width: 20%;">
+                                <small class="text-dark">
+                                    {% if good.base_num > 0 %}
+                                        {{ good.base_num }}
+                                    {% endif %}
+                                </small>
+                                <small><small class="text-info">
+                                    {% if good.base_num > 0 %}
+                                        {{ good.g_type }}
+                                    {% endif %}
+                                </small></small>
+                            </div>
+                            <div class="input-group-prepend" style="width: 20%;">
+                                <small class="text-muted">
+                                    {% if good.base_weight > 0 %}
+                                        {{ good.base_weight }}
+                                    {% endif %}
+                                </small>
+                                <small><small class="text-primary">
+                                    {% if good.base_weight > 0 %}
+                                        吨
+                                    {% endif %}
+                                </small></small>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="input-group-prepend px-0 pt-1">
+                        <a type="button" class="btn-sm btn-primary" style="text-decoration:none"
+                           href="{{ url_for('edit_good', good_id=good.good_id) }}">修改</a>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</main>
+
+</body>
+</html>
